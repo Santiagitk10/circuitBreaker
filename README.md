@@ -23,3 +23,12 @@ https://rapidapi.com/Active-api/api/airport-info
 Paquete de HealthChecks de Microsoft
 
 dotnet add package AspNetCore.HealthChecks.UI.Client
+
+
+https://www.youtube.com/watch?v=_Q3dTJJgICs
+
+- Librería de Polly
+
+https://github.com/App-vNext/Polly
+
+
