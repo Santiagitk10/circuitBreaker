@@ -14,9 +14,27 @@ public class ServiceRequestsController: ControllerBase
     }
 
     [HttpGet(Name = "GetData")]
-    public async Task<IActionResul> Get()
+    public async Task<IActionResult> Get()
     {
-        await ConnectToApi();
+
+        //Se puede implementar una política por cada tipo de excepción, en este caso 
+        //se hace para una excepción en general
+        var retryPolicy = retryPolic
+            .Handle<Exception>()
+            .RetryAsync(5, onRetry: (exception, retryCount) =>
+            {
+                Console.WriteLine("Error:" + exception.Message + " ... Retry Count " + retryCount);
+            });
+
+
+        await retryPolicy.ExecuteAsync(async () =>
+        {
+            await ConnectToApi();
+        })
+        
+
+
+      
         return Ok();
     }
 
@@ -39,6 +57,7 @@ public class ServiceRequestsController: ControllerBase
         else
         {
             Console.Write(response.ErrorMessage);
+            throw new Exception("Unable to connect to the service");
         }
 
     }
